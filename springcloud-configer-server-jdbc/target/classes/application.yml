@@ -1,0 +1,18 @@
+spring:
+  profiles:
+     active: jdbc
+  application:
+     name: springcloud-config-jdbc-server
+  datasource:
+     url: jdbc:mysql://192.168.200.21:3306/bizdb20170224?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=GMT%2B8
+     username: dev
+     password: dev2018#!
+     driver-class-name: com.mysql.jdbc.Driver
+  cloud:
+     config:
+       label: master
+       server:
+         jdbc: true
+server:
+  port: 7201
+spring.cloud.config.server.jdbc.sql: SELECT key1, value1 from config_properties where APPLICATION=? and PROFILE=? and LABEL=?
