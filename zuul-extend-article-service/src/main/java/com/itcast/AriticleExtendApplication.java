@@ -13,6 +13,8 @@ public class AriticleExtendApplication {
 		
 		System.out.println("aritle service.....");
 	//	System.setProperty("open.api.defaultLimit", "100");
-		SpringApplication.run(AriticleExtendApplication.class, args);
+		//SpringApplication.run(AriticleExtendApplication.class, args);
+		
+		SpringApplication.run(AriticleExtendApplication.class, "--spring.profiles.active=dev");
 	}
 }

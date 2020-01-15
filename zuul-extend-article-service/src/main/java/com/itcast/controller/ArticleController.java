@@ -25,15 +25,15 @@ public class ArticleController {
 	@GetMapping("/article/callHello") 	
 	public String callHello() {
 		System.err.println("用户ID:" + request.getHeader("uid"));
-	    return userRemoteClient.hello(); 	
+	    return userRemoteClient.hello()+"===port="+ request.getServerPort(); 
 	}
 	
 	
 	@ApiRateLimit(confKey = "open.api.test")
 	@GetMapping("/article/test") 	
 	public String testHello() {
-		
+		System.out.println("service ArticleController, port: " + request.getServerPort() );
 		System.out.println(Thread.currentThread().getName()+"==>处理"+sf.format(new Date()));
-	    return userRemoteClient.test(); 	
+	    return userRemoteClient.test()+"===port="+ request.getServerPort(); 	
 	}
 }
