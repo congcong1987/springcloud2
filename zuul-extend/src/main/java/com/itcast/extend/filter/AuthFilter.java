@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
@@ -56,6 +58,8 @@ public class AuthFilter extends ZuulFilter {
         //白名单，放过
         List<String> whileApis = Arrays.asList(apis.split(","));
         String uri = ctx.getRequest().getRequestURI();
+        String ipaddr = ctx.getRequest().getRemoteAddr();
+        System.out.println(ipaddr+"==============>访问地址:"+getIpAddr(ctx.getRequest()));
         if (whileApis.contains(uri)) {
             return null;
         }
@@ -97,5 +101,20 @@ public class AuthFilter extends ZuulFilter {
         ctx.addZuulRequestHeader("uid", jwt.getUid());
         return null;
     }
+    
+    
+    		public  String getIpAddr(HttpServletRequest request)  {
+    	         String ip  =  request.getHeader( " x-forwarded-for " );
+    	           if (ip  ==   null   ||  ip.length()  ==   0   ||   " unknown " .equalsIgnoreCase(ip))  {
+    	              ip  =  request.getHeader( " Proxy-Client-IP " );
+    	          } 
+    	            if (ip  ==   null   ||  ip.length()  ==   0   ||   " unknown " .equalsIgnoreCase(ip))  {
+    	              ip  =  request.getHeader( " WL-Proxy-Client-IP " );
+    	          } 
+    	           if (ip  ==   null   ||  ip.length()  ==   0   ||   " unknown " .equalsIgnoreCase(ip))  {
+    	             ip  =  request.getRemoteAddr();
+    	          } 
+    	           return  ip;
+    	     }
 
 }

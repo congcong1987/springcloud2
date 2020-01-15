@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.itcast.extend.filter.AuthFilter;
 import com.itcast.extend.filter.DownGradeFilter;
+import com.itcast.extend.filter.GrayPushFilter;
 import com.itcast.extend.filter.SingleLimitFilter;
 
 @Configuration
@@ -28,9 +29,15 @@ public class FilterConfig {
 	}*/
 		
 		
-		@Bean
+		/*@Bean
 		public DownGradeFilter downGradeFilter() {
 			return new DownGradeFilter();
+		}*/
+		
+		//灰度发布
+		@Bean
+		public GrayPushFilter grayPushFilter() {
+			return new GrayPushFilter();
 		}
 	
 	

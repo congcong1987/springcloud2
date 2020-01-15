@@ -46,9 +46,12 @@ public class GrayPushFilter extends ZuulFilter {
         String loginUserId = ctx.getZuulRequestHeaders().get("uid");
         RibbonFilterContextHolder.getCurrentContext().add("userId", loginUserId);
         // 灰度发布的服务信息
-        RibbonFilterContextHolder.getCurrentContext().add("servers",basicConf.getGrayPushServers());
+      //  RibbonFilterContextHolder.getCurrentContext().add("servers",basicConf.getGrayPushServers());
+        
+        RibbonFilterContextHolder.getCurrentContext().add("servers","zuul-extend-article-service,192.168.100.116:8084");//指定哪些服务==>进行灰色发布
         // 灰度发布的用户ID信息
-        RibbonFilterContextHolder.getCurrentContext().add("userIds", basicConf.getGrayPushUsers());
+       // RibbonFilterContextHolder.getCurrentContext().add("userIds", basicConf.getGrayPushUsers());
+        RibbonFilterContextHolder.getCurrentContext().add("userIds", "1002,1003");
         return null;
     }
 }
