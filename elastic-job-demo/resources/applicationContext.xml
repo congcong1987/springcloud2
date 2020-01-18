@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context" 
+    xmlns:reg="http://www.dangdang.com/schema/ddframe/reg" 
+    xmlns:job="http://www.dangdang.com/schema/ddframe/job" 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                        http://www.springframework.org/schema/beans/spring-beans.xsd 
+                        http://www.springframework.org/schema/context 
+                        http://www.springframework.org/schema/context/spring-context.xsd 
+                        http://www.dangdang.com/schema/ddframe/reg 
+                        http://www.dangdang.com/schema/ddframe/reg/reg.xsd 
+                        http://www.dangdang.com/schema/ddframe/job 
+                        http://www.dangdang.com/schema/ddframe/job/job.xsd 
+                        ">
+                        
+            <reg:zookeeper id="regCenter" server-lists="192.168.200.28:4181" namespace="dd-job" 
+    	base-sleep-time-milliseconds="1000" max-sleep-time-milliseconds="3000" max-retries="3" />
+    	
+    	
+    	 <bean id="elasticJobLog" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://192.168.200.21:3306/batch_log"/>
+        <property name="username" value="dev"/>
+        <property name="password" value="dev2018#!"/>
+   		 </bean>
+    	
+    	
+    	  <job:simple id="mySimpleJob" class="com.itcast.job.MySimpleJob2" registry-center-ref="regCenter"
+    	 cron="0 19 09 * * ?" sharding-total-count="2" sharding-item-parameters="0=上海,1=北京" 
+    	 description="我的第一个简单作业" overwrite="true" event-trace-rdb-data-source="elasticJobLog"
+    	 job-exception-handler="com.itcast.job.CustomJobExceptionHandler"/>
+    	
+    	 <job:simple id="mySimpleJob" class="com.itcast.job.MySimpleJob" registry-center-ref="regCenter"
+    	 cron="0 28 15 * * ?" sharding-total-count="2" sharding-item-parameters="0=0,1=1" description="我的第一个简单作业" overwrite="true"/>
+       
+        <job:dataflow id="myDataflowJob" class="com.itcast.job.MyDataflowJob" registry-center-ref="regCenter" 
+    	sharding-total-count="2" cron="0 50 15 * * ?" sharding-item-parameters="0=0,1=1" description="我的第一个数据流作业" 
+    	streaming-process="false" overwrite="true"/>
+    
+</beans>
